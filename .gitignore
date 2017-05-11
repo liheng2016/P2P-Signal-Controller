@@ -42,5 +42,3 @@ jspm_packages
 .idea
 /dist
 dist
-/Resource
-Resource

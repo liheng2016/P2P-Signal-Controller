@@ -1,0 +1,156 @@
+#!/usr/bin/env node
+/*** 模块引用 ***/
+var http = require('http');
+var os = require('os');
+var debug = require('debug')('Catalog:server');
+var WebSocketServer = require("ws").Server;
+/*** 自定义 ***/
+//端口号
+var port;
+//websocket控制模块
+var WSCtrl = {
+  //管理对象
+  manager:  require("../Libs/Websocket/Manager"),
+  //返回对象
+  response: require("../Libs/WebSocket/Type/Response")
+};
+/**
+ * 规范化端口
+ * @val            端口号
+ */
+function normalizePort(val) {
+  var port = parseInt(val, 10);
+  if (isNaN(port)) {
+    return val;                                       // named pipe
+  }
+  if (port >= 0) {
+    return port;                                      // port number
+  }
+  return false;
+}
+
+/*** 开启HTTP控制服务器 ***/
+var app = require("../app");
+port = normalizePort(process.env.PORT || '8080');
+app.set('port', port);
+var server = http.createServer(app);
+server.listen(port);
+server.on('error',  function(error){
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  var bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+  
+  // handle specific listen errors with friendly messages
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+});
+server.on('listening', function(){
+  var addr = server.address();
+  var bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+});
+
+
+/*** 开启Websocket控制服务器 ***/
+//开启
+port = normalizePort(process.env.PORT || '10000');
+var wss = new WebSocketServer({
+  port:                   port,
+  /**
+   * 验证连接
+   */
+  verifyClient:           function(info){
+    return true;
+  }
+});
+//注册连接触发事件
+wss.on("connection", function(ws){
+  //登记客户端
+  WSCtrl.manager.addClient(ws);
+  
+  //监听关闭
+  ws.on("close", function(event){
+    //清除这个客户端 & 从资源列表中清除这个客户端的提供选项
+    WSCtrl.manager.deleteClient(this);
+  });
+  //监听传入消息
+  ws.on("message", function(req, flag){
+    var i, j;
+    var client = this;
+  
+    var address;
+    var desc;
+    var candidate;
+    //找到这个client
+    try{
+      var msg = JSON.parse(req);
+      //根据消息码操作
+      switch(msg.code){
+        //操作索引
+        case 3001:
+          //收集资源
+          WSCtrl.manager.gatherResources(client, msg.data);
+          break;
+        //寻找有这些资源的客户端
+        case 3002:
+          //通知客户端，这些资源该怎么找
+          WSCtrl.manager.findClients2AcquireData(client, msg.data);
+          break;
+        //转发提供描述
+        case 3003:
+          try{
+            //获取地址、描述信息
+            address = msg.data.target.address;
+            desc = msg.data.desc;
+            //调用方法
+            WSCtrl.manager.transferOfferDesc(client, address, desc);
+          }catch (e){
+            //获取内容报错
+          }
+          break;
+        //转发响应描述
+        case 3004:
+          try{
+            address = msg.data.target.address;
+            desc = msg.data.desc;
+            //调用方法
+            WSCtrl.manager.transferAnswerDesc(client, address, desc);
+          }catch (e){}
+          break;
+        //转发候选信息描述
+        case 3005:
+          address = msg.data.target.address;
+          candidate = msg.data.candidate;
+          console.log("转发候选信息描述");
+        
+          //调用方法
+          WSCtrl.manager.transferIceCandidate(client, address, candidate);
+          break;
+      
+        //转发数据索取请求
+        case 3201:
+          try{
+            address = msg.data.target.address;
+            //调用方法
+            WSCtrl.manager.transferDataQuery(client, address);
+          }catch(e){}
+          break;
+      }
+    }catch(e){}
+  });
+});
