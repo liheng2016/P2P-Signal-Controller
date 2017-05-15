@@ -1,10 +1,76 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="cn">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>管理</title>
+    <link rel="stylesheet" href="css/site.css"/>
+
+    <!-- jquery -->
+    <script src="//cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+
+    <!-- boostrap -->
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="//cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- 引入Chart.js -->
+    <script src="bower_components/chart.js/dist/Chart.js"></script>
 </head>
 <body>
+<!-- 头部 -->
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">P2P控制中心</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">总览</a></li>
+                <li><a href="/ClientList.html">客户端列表</a></li>
+                <li><a href="/ResourceList.html">资源列表</a></li>
+                <li><a href="/Settings.html">设置</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- 内容主题 -->
+<article class="panel panel-default Main" style="border:none;">
+    <div class="panel-body">
+        <div class="container-fluid">
+            <div class="row">
+                <!-- 客户端情况 -->
+                <div class="col-xs-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <span class="btn pull-left">客户端情况</span>
+                            <Button class="btn btn-primary pull-right" onclick="overview.clients.refresh();">刷新</Button>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="chart-clients" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <!-- 资源情况 -->
+                <div class="col-xs-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <span class="btn pull-left">资源情况</span>
+                            <Button class="btn btn-primary pull-right" onclick="overview.resources.refresh();">刷新</Button>
+                        </div>
+                        <div class="panel-body">
+                            <canvas id="chart-resources" width="400" height="400"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</article>
 
+<!-- 开启js -->
+<script src="js/index.js"></script>
 </body>
 </html>

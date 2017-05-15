@@ -1,0 +1,21 @@
+{
+  "name": "p2p-controll-server",
+  "homepage": "https://github.com/whatshow/P2P-Signal-Controller",
+  "authors": [
+    "quxinwei <quxinwei@witenet.com>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "chart.js": "^2.5.0"
+  }
+}
