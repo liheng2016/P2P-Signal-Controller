@@ -7,7 +7,7 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
         10000:  提供websocket服务
 
 
-## 一、信令服务器处理报文
+## 一、信令服务器接口
 * 操作索引
     * 参数
 
@@ -15,12 +15,24 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 code:           3001,
                 data:[
                     {
-                        url:    "//www.example.com",            //资源：url绝对路径
+                        url:    "//www.example.com/example",    //资源：url绝对路径
                         md5:    "34dfsf3afeefefefe"             //资源：md5校验代码
                     },
                     ...
                 ]
             }
+
+    * 返回结果
+        * 1001 通知客户端MD5错误，需要丢弃的资源
+
+                {
+                    code:       1001,
+                    data:[
+                        "//www.example.com/example",            //资源：url绝对路径
+                        ...
+                    ]
+                }
+
 * 寻找有这些资源的客户端
 
         3001 操作索引
