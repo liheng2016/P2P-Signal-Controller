@@ -15,7 +15,7 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 code:   3001,
                 data:[
                     {
-                        url:    "//www.example.com/example",    //资源：url绝对路径
+                        url:    "//www.example.com/example",    //资源：url绝对路径（如果客户端没有指定传输协议，则采用通用协议）
                         md5:    "34dfsf3afeefefefe"             //资源：md5校验代码
                     },
                     ...
@@ -28,7 +28,7 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 {
                     code:   1001,
                     data:[
-                        "//www.example.com/example",            //资源：url绝对路径
+                        "//www.example.com/example",            //资源：url绝对路径（如果客户端没有指定传输协议，则采用通用协议）
                         ...
                     ]
                 }
@@ -39,14 +39,22 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
             {
                 code:   3002,
                 data:[
-                    "//www.example.com/example",                //资源：url绝对路径
+                    "//www.example.com/example",                //资源：url绝对路径（如果客户端没有指定传输协议，则采用通用协议）
                     "http://www.example.com/example",
                     "https://www.example.com/example",
                     ...
                 ]
             }
 
-    * 结果
+    * 返回结果
+        * 1002 通知客户端每个的资源的第三方提供者 & 无第三方提供者的资源
+
+            {
+                code:   1002,
+                data:{
+
+                }
+            }
 
         3001 操作索引
         3002 寻找有这些资源的客户端
