@@ -8,11 +8,11 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
 
 
 ## 一、信令服务器接口
-* 操作索引
+* 3001 操作索引
     * 参数
 
             {
-                code:           3001,
+                code:   3001,
                 data:[
                     {
                         url:    "//www.example.com/example",    //资源：url绝对路径
@@ -26,14 +26,27 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
         * 1001 通知客户端MD5错误，需要丢弃的资源
 
                 {
-                    code:       1001,
+                    code:   1001,
                     data:[
                         "//www.example.com/example",            //资源：url绝对路径
                         ...
                     ]
                 }
 
-* 寻找有这些资源的客户端
+* 3002 寻找有这些资源的客户端
+    * 参数
+
+            {
+                code:   3002,
+                data:[
+                    "//www.example.com/example",                //资源：url绝对路径
+                    "http://www.example.com/example",
+                    "https://www.example.com/example",
+                    ...
+                ]
+            }
+
+    * 结果
 
         3001 操作索引
         3002 寻找有这些资源的客户端
