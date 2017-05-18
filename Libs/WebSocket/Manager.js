@@ -11,7 +11,6 @@ var Client = require("./Type/Client");
 var Resource = require("./Type/Resource");
 var Response = require("./Type/Response");
 
-
 //保存的数据
 var global = {
     resources:  [],                                 //资源
@@ -360,11 +359,22 @@ module.exports = {
             }
         }
     },
+    
+  
+  
+    
+  
+    /*** 提供给内部接口的 ***/
     /**
-     * 转发资源情况
-     * @ws              客户端响应对象
+     * 获取所有客户端
      */
-    tranmitResponse:    function(){
-
+    getAllClients:  function(){
+      return global.clients;
     },
+    /**
+     * 获取所有资源列表
+     */
+    getAllResource: function(){
+      return global.resources;
+    }
 };
