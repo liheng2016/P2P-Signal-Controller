@@ -332,34 +332,6 @@ module.exports = {
       }
     },
     
-    
-
-    /**
-     * 检查是否存在提供资源的人
-     * @ws                      websocket连接对象
-     * @address                 地址
-     * @url                     资源绝对路径
-     */
-    checkProvider:      function(ws, address, url){
-        var i;
-        var client = null;
-        if(global.clients.length <= 0){
-            //没有提供者，资源不存在
-            ws.send(100304, null);
-        }else{
-            //尝试寻找客户端
-            for(i = 0; i < global.clients.length; i++) {
-                if (global.clients[i].match(address)) {
-                    client = global.clients[i];
-                    break;
-                }
-            }
-            if(!client){
-                ws.send(100304, null);
-            }
-        }
-    },
-    
   
   
     
