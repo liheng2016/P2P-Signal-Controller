@@ -68,6 +68,10 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                     offer:  {
                         //IP地址
                         address:    string
+                    },
+                    answer: {
+                        //时间戳
+                        timestamp:  number
                     }
                 }
             }
@@ -82,6 +86,8 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                         address:    string
                     },
                     answer: {
+                        //时间戳
+                        timestamp:  number,
                         //IP地址（新增）
                         address:    string
                     }
@@ -101,6 +107,8 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                         isAvailable: false
                     },
                     answer: {
+                        //时间戳
+                        timestamp:  number,
                         //IP地址（新增）
                         address:    string
                     }
@@ -122,14 +130,18 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 code:   3003,
                 data:   {
                     offer:  {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
                         address:    string
                     },
                     answer: {
+                        //时间戳
+                        timestamp:  number,
                         //IP地址
-                        address:    string,
+                        address:    string
                     }
                 }
             }
@@ -149,12 +161,16 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 code:   3004,
                 data:   {
                     offer:  {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
                         address:    string
                     },
                     answer: {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
@@ -182,6 +198,8 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 code:   3005,
                 data:   {
                     offer:  {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
@@ -190,6 +208,8 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                         candidate:  object,
                     },
                     answer: {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
@@ -204,12 +224,16 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                 code:   3005,
                 data:   {
                     offer:  {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
                         address:    string
                     },
                     answer: {
+                        //时间戳
+                        timestamp:  number
                         //资源描述
                         desc:       object,
                         //IP地址
