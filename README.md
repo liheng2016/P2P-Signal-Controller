@@ -59,70 +59,6 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
                     }
                 }
 
-* 3201 转发数据索取请求
-    * 参数
-
-            {
-                code:   3201,
-                data:   {
-                    offer:  {
-                        //IP地址
-                        address:    string
-                    },
-                    answer: {
-                        //时间戳
-                        timestamp:  number
-                    }
-                }
-            }
-
-    * 返回结果（增加响应者的IP地址）
-
-            {
-                code:   1201,
-                data:   {
-                    offer:  {
-                        //IP地址
-                        address:    string
-                    },
-                    answer: {
-                        //时间戳
-                        timestamp:  number,
-                        //IP地址（新增）
-                        address:    string
-                    }
-                }
-            }
-
-* 3202 转发拒绝服务
-    * 参数
-
-            {
-                code:   3202,
-                data:   {
-                    offer:  {
-                        //IP地址
-                        address:    string
-                        //可用
-                        isAvailable: false
-                    },
-                    answer: {
-                        //时间戳
-                        timestamp:  number,
-                        //IP地址（新增）
-                        address:    string
-                    }
-                }
-            }
-
-    * 返回结果
-
-            {
-                code:   1202,
-                //转发客户端data字段
-                data:   object
-            }
-
 * 3003 转发描述（提供者）
     * 参数
 
@@ -248,6 +184,101 @@ P2P分发框架－信令服务器，用于控制连接，提供peer端寻找、�
 
             {
                 code:   1005,
+                //转发客户端data字段
+                data:   object
+            }
+
+* 3201 转发数据索取请求
+    * 参数
+
+            {
+                code:   3201,
+                data:   {
+                    offer:  {
+                        //IP地址
+                        address:    string
+                    },
+                    answer: {
+                        //时间戳
+                        timestamp:  number
+                    }
+                }
+            }
+
+    * 返回结果（增加响应者的IP地址）
+
+            {
+                code:   1201,
+                data:   {
+                    offer:  {
+                        //IP地址
+                        address:    string
+                    },
+                    answer: {
+                        //时间戳
+                        timestamp:  number,
+                        //IP地址（新增）
+                        address:    string
+                    }
+                }
+            }
+
+* 3202 转发拒绝服务
+    * 参数
+
+            {
+                code:   3202,
+                data:   {
+                    offer:  {
+                        //IP地址
+                        address:    string
+                        //可用
+                        isAvailable: false
+                    },
+                    answer: {
+                        //时间戳
+                        timestamp:  number,
+                        //IP地址
+                        address:    string
+                    }
+                }
+            }
+
+    * 返回结果
+
+            {
+                code:   1202,
+                //转发客户端data字段
+                data:   object
+            }
+
+* 3203 转发终止请求
+    * 参数（部分参数）
+
+            {
+                code:   3203,
+                data:   {
+                    offer:{
+                        //IP地址
+                        address:    string,
+
+                        ...                     //其它字段省略
+                    },
+                    answer: {
+                        //时间戳
+                        timestamp:  number,
+                        //IP地址
+                        address:    string
+                        //是否可用
+                        isAvailable: false
+                    }
+                }
+            }
+
+    * 返回结果
+
+            {
+                code:   1203,
                 //转发客户端data字段
                 data:   object
             }
