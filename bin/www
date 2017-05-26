@@ -113,42 +113,30 @@ wss.on("connection", function(ws){
           break;
         //转发提供描述
         case 3003:
-          try{
-            //获取地址、描述信息
-            address = msg.data.target.address;
-            desc = msg.data.desc;
-            //调用方法
-            WSCtrl.manager.transferOfferDesc(client, address, desc);
-          }catch (e){
-            //获取内容报错
-          }
+          WSCtrl.manager.transferOfferDesc(client, msg.data);
           break;
         //转发响应描述
         case 3004:
-          try{
-            address = msg.data.target.address;
-            desc = msg.data.desc;
-            //调用方法
-            WSCtrl.manager.transferAnswerDesc(client, address, desc);
-          }catch (e){}
+          //调用方法
+          WSCtrl.manager.transferAnswerDesc(client, msg.data);
           break;
         //转发候选信息描述
         case 3005:
-          address = msg.data.target.address;
-          candidate = msg.data.candidate;
-          console.log("转发候选信息描述");
-        
           //调用方法
-          WSCtrl.manager.transferIceCandidate(client, address, candidate);
+          WSCtrl.manager.transferIceCandidate(client, msg.data);
           break;
       
         //转发数据索取请求
         case 3201:
-          try{
-            address = msg.data.target.address;
-            //调用方法
-            WSCtrl.manager.transferDataQuery(client, address);
-          }catch(e){}
+          WSCtrl.manager.transferDataQuery(client, msg.data);
+          break;
+        //转发拒绝服务区
+        case 3202:
+          WSCtrl.manager.transferRefuseProvide(client. msg.data);
+          break;
+        //转发
+        case 3203:
+          WSCtrl.manager.transferRefuseRequest(client, msg.data);
           break;
       }
     }catch(e){}

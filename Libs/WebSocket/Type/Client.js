@@ -73,6 +73,32 @@ Client.prototype.addURL = function(url){
 Client.prototype.getAddress = function(){
     return this.address;
 };
+/**
+ * 发送字符串
+ * @input                   可以接收字符串或对象
+ */
+Client.prototype.send = function(input){
+  var client = this;
+  
+  return Promise(function(resolve, reject){
+    if(typeof input == 'string'){
+      try{
+        client.obj.send(input);
+        resolve();
+      }catch(e){
+        reject(e);
+      }
+    }else{
+      try{
+        var str = JSON.stringify(input);
+        client.obj.send(str);
+        resolve();
+      }catch(e){
+        reject(e);
+      }
+    }
+  });
+};
 
 /**
  * 客户端构造函数（导出）
