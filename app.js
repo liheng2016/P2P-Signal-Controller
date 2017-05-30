@@ -22,6 +22,10 @@ app.use(express.static(path.join(__dirname, 'Resource')));
 //注册所有Servlets
 //app.use('/', Servlets);
 //app.use('/users', users);
+//客户端
+app.use("/client", require("./Servlets/Clients"));
+//资源
+app.use("/resource", require("./Servlets/Resources"));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

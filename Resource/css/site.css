@@ -3,18 +3,22 @@
     width:              35px;
 }
 .Main{
-    margin-top:         52px;
+    margin-top:         51px;
 }
 .SideBar{
+    display:            block;
     width:              300px;
 
     position:           fixed;
+    top:                51px;
     left:               0;
-    top:                52px;
     bottom:             0;
+
 
     background:         #f5f5f5;
 }
 .Main-Content{
+    width:              calc(100% - 300px);
+    margin-left:        300px;
     padding:            20px;
 }

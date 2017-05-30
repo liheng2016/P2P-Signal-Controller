@@ -138,6 +138,10 @@ wss.on("connection", function(ws){
         case 3203:
           WSCtrl.manager.transferRefuseRequest(client, msg.data);
           break;
+        //新增资源
+        case 3204:
+          WSCtrl.manager.appendResource(client, msg.data);
+          break;
       }
     }catch(e){}
   });

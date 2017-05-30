@@ -321,6 +321,34 @@ module.exports = {
       receiveclient.send({ code: 1202, data: data });
     },
 
+    /**
+     * 增加资源
+     * @ws              websocket对象
+     * @data            客户端传输数据 {url, md5}
+     */
+    appendResource: function(ws, data){
+        //获取客户端
+        var client = this.getClient(ws);
+        //客户端扩展资源
+        client.addURL(data.url);
+        //资源扩展客户端
+        var resource = this.getResource(data.url);
+        (async(function(){
+            //如果没有找到资源，则新建一个资源
+            if(!resource){
+                try{
+                    resource = await(Resource(data.url));
+                    resource.addClient(client, data.md5);
+                    global.resources.push(resource);
+                }catch(e){
+                    //资源获取失败，不管了
+                    console.log("增加资源:资源获取失败");
+                }
+            }
+            //此时应该有资源了
+            resource.addClient(client, data.md5);
+        }))();
+    },
   
     /*** 提供给内部接口的 ***/
     /**
@@ -346,5 +374,21 @@ module.exports = {
           return global.clients[i];
         }
       }
+    },
+    /**
+     * 获取资源
+     * @url             资源url
+     */
+    getResource:   function(ws, url, md5){
+        var i;
+        var resource = null;
+        for(i = 0; i < global.resources; i++){
+            if(global.resources[i].match(url)){
+                resource = global.resources[i];
+                break;
+            }
+        }
+
+        return resource;
     }
 };
