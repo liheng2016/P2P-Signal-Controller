@@ -18,7 +18,6 @@ var global = {
 };
 //导出对象
 module.exports = {
-    /*** 对外提供接口 ***/
     /**
      * 添加客户端
      * @ws
@@ -185,142 +184,157 @@ module.exports = {
         console.log("发送结果");
         console.log(response);
     },
-  
-    /**
-     * 转发请求desc
-     * @ws                      websocket连接对象
-     * @data                    客户端传递的data信息
-     */
-    transferOfferDesc:   function(ws, data){
-      //寻找发送方
-      var sendclient = this.getClient(ws);
-      //如果找不到发送方，说明发送方已经关闭，则直接结束
-      if(!sendclient){
-        console.warn("转发请求desc：发送者已经关闭了连接");
-        return;
-      }
-      
-      //寻找接收者
-      var receiveclient = this.getClient(data.answer.address);
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发请求desc：接收者已经关闭了连接");
-        return;
-      }
-      
-      //给接收发送数据
-      receiveclient.send({ code: 1003, data: data });
-    },
-    /**
-     * 转发响应Desc
-     * @ws                 websocket连接对象
-     * @data               客户端发送的数据
-     */
-    transferAnswerDesc: function(ws, data){
-      //寻找发送方
-      var sendclient = this.getClient(ws);
-      //如果找不到发送方，说明发送方已经关闭，则直接结束
-      if(!sendclient){
-        console.warn("转发响应desc：发送者已经关闭了连接");
-        return;
-      }
-      //寻找接收者
-      var receiveclient = this.getClient(data.offer.address);
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发响应desc：接收者已经关闭了连接");
-        return;
-      }
-      
-      //转发信息
-      receiveclient.send({ code: 1004, data: data });
-    },
-    /**
-     * 转发候选信息
-     * @ws                目标
-     * @data              客户端发送数据
-     */
-    transferIceCandidate: function(ws, data){
-      //寻找发送方
-      var sendclient = this.getClient(ws);
-      //如果找不到发送方，说明发送方已经关闭，则直接结束
-      if(!sendclient){
-        console.warn("转发候选信息：发送者已经关闭了连接");
-        return;
-      }
-      //寻找接收者
-      var receiveclient = data.offer.candidate ? this.getClient(data.answer.address) : this.getClient(data.offer.address);;
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发候选信息：接收者已经关闭了连接");
-        return;
-      }
-      
-      //转发
-      receiveclient.send({ code: 1005, data: data });
-    },
     /**
      * 转发数据索取请求
      * @ws                      websocket连接对象
      * @data                    客户端传递的数据对象
      */
-    transferDataQuery:  function(ws, data){
-      //寻找发送方
-      var sendclient = this.getClient(ws);
-      //如果找不到发送方，说明发送方已经关闭，则直接结束
-      if(!sendclient){
-        console.warn("转发数据索取请求：发送者已经关闭了连接");
-        return;
+    transferDataQuery:  function(ws, address){
+      console.warn("转发数据索取请求");
+      var i;
+      var address2Send;
+      //找到发送方法
+      for(i = 0; i < global.clients.length; i++){
+        if(global.clients[i].match(ws)){
+          address2Send = global.clients[i].getAddress();
+          break;
+        }
       }
-      //增加响应者的IP
-      data.answer.address = sendclient.getAddress();
-      
-      //寻找接收者
-      var receiveclient = this.getClient(data.offer.address);
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发数据索取请求：接收者已经关闭了连接");
-        return;
+      //找到接受方
+      for(i = 0; i < global.clients.length; i++){
+        if(global.clients[i].match(address)){
+          //准备响应报文
+          var msg = {
+            code:               1201,
+            data:{
+              source:{
+                address:        address2Send
+              }
+            }
+          };
+          //发送数据
+          global.clients[i].obj.send(JSON.stringify(msg));
+          console.log(msg);
+          break;
+        }
       }
-      
-      //转发
-      receiveclient.send({ code: 1201, data: data });
     },
-    /**
-     * 转发拒绝服务
-     * @ws
-     * @data
-     */
-    transferRefuseProvide:  function(ws, data){
-      //寻找接收者
-      var receiveclient = this.getClient(data.answer.address);
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发拒绝服务：接收者已经关闭了连接");
-        return;
-      }
-      
-      //转发
-      receiveclient.send({ code: 1202, data: data });
-    },
-    /**
-     * 转发终止请求
-     * @ws              websocket对象
-     * @data            客户端传来的数据
-     */
-    transferRefuseRequest:  function(ws, data){
-      //寻找接收者
-      var receiveclient = this.getClient(data.offer.address);
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发终止请求：接收者已经关闭了连接");
-        return;
-      }
   
-      //转发
-      receiveclient.send({ code: 1202, data: data });
-    },
 
+    /**
+     * 转发请求desc
+     * @ws                      websocket连接对象
+     * @address                 目标地址
+     * @desc                    目标描述信息
+     */
+    transferOfferDesc:   function(ws, address, desc){
+      var i;
+      var address2Send;
+      //找到发送方
+      for(i = 0; i < global.clients.length; i++){
+        if(global.clients[i].match(ws)){
+          address2Send = global.clients[i].getAddress();
+          break;
+        }
+      }
+      //找到接收方
+      for(i = 0; i < global.clients.length; i++){
+        //找到了
+        if(global.clients[i].match(address)){
+          var msg = {
+            code:               1003,
+            data:{
+              source:{
+                address:        address2Send
+              },
+              desc:             desc
+            }
+          };
+          console.warn("通知另外一方的本地描述（Offer）");
+          console.warn(msg);
+          global.clients[i].obj.send(JSON.stringify(msg));
+          break;
+        }
+      }
+    },
+    /**
+     * 转发响应Desc
+     * @ws                      websocket连接对象
+     * @address                 目标地址
+     * @desc                    目标描述信息
+     */
+    transferAnswerDesc: function(ws, address, desc){
+      var i;
+      var address2Send;
+      //找到发送方
+      for(i = 0; i < global.clients.length; i++){
+        if(global.clients[i].match(ws)){
+          address2Send = global.clients[i].getAddress();
+          break;
+        }
+      }
+      //找到接收方
+      for(i = 0; i < global.clients.length; i++){
+        //找到了
+        if(global.clients[i].match(address)){
+          var msg = {
+            code:               1004,
+            data:{
+              source:{
+                address:        address2Send
+              },
+              desc:             desc
+            }
+          };
+          console.warn("通知另外一方的描述（Answer）");
+          console.warn(msg);
+          global.clients[i].obj.send(JSON.stringify(msg));
+          break;
+        }
+      }
+    },
+    /**
+     * 转发候选信息
+     * @ws                目标
+     * @address
+     * @iceCandidate
+     */
+    transferIceCandidate: function(ws, address, iceCandidate){
+      console.error("转发候选信息");
+      var i;
+      var address2Send;               //需要发送给对方的地址
+      //找到请求方的地址
+      for(i = 0; i < global.clients.length; i++){
+        if(global.clients[i].match(ws)){
+          address2Send = global.clients[i].getAddress();
+          break;
+        }
+      }
+      //找到对方
+      for(i = 0; i < global.clients.length; i++){
+        if(global.clients[i].match(address)){
+          //构造信息
+          var msg = {
+            code:         1005,
+            data:{
+              source:{
+                address:  address2Send
+              },
+              candidate:    iceCandidate
+            }
+          };
+          //发送
+          global.clients[i].obj.send(JSON.stringify(msg));
+          console.log("通知对方候选信息");
+          console.log(msg);
+          break;
+        }
+      }
+    },
+    
+  
+  
+    
   
     /*** 提供给内部接口的 ***/
     /**
@@ -334,17 +348,5 @@ module.exports = {
      */
     getAllResource: function(){
       return global.resources;
-    },
-    /**
-     * 获取客户端
-     * @mark            客户端资源标识，可以是websocket对象，
-     */
-    getClient:  function(mark) {
-      var i;
-      for(i = 0; i < global.clients.length; i++) {
-        if(global.clients[i].match(mark)){
-          return global.clients[i];
-        }
-      }
     }
 };
