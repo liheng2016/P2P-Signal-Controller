@@ -359,10 +359,16 @@ module.exports = {
             }
         }
     },
-    
-  
-  
-    
+    /**
+     * 更新目录
+     * @ws                           websocket连接对象
+     * @data                        客户端返回报文，形如 [{url, md5}, {url, md5}, ...]       url资源数组
+     */
+    updateCatalog:  function(ws, data){
+        //检查这个提供者是否存在，如果存在，则追加资源
+
+
+    },
   
     /*** 提供给内部接口的 ***/
     /**

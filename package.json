@@ -1,5 +1,5 @@
 {
-  "name": "Catalog",
+  "name": "P2P_Signal_Controller",
   "version": "1.0.1",
   "private": true,
   "scripts": {
@@ -7,10 +7,8 @@
   },
   "node_args": "-harmony",
   "dependencies": {
-    "ali-oss": "^4.4.4",
     "asyncawait": "^1.0.6",
     "body-parser": "~1.15.1",
-    "co": "^4.6.0",
     "cookie-parser": "~1.4.3",
     "crypto": "0.0.3",
     "debug": "~2.2.0",
