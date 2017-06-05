@@ -90,12 +90,7 @@ wss.on("connection", function(ws){
   });
   //监听传入消息
   ws.on("message", function(req, flag){
-    var i, j;
     var client = this;
-  
-    var address;
-    var desc;
-    var candidate;
     //找到这个client
     try{
       var msg = JSON.parse(req);
@@ -132,7 +127,7 @@ wss.on("connection", function(ws){
           break;
         //转发拒绝服务区
         case 3202:
-          WSCtrl.manager.transferRefuseProvide(client. msg.data);
+          WSCtrl.manager.transferRefuseProvide(client, msg.data);
           break;
         //转发
         case 3203:
@@ -143,6 +138,12 @@ wss.on("connection", function(ws){
           WSCtrl.manager.appendResource(client, msg.data);
           break;
       }
-    }catch(e){}
+    }catch(e){
+      console.log("JSON转化失败，客户端乱传");
+
+      console.log(typeof req);
+      console.log(req);
+      console.log(e);
+    }
   });
 });

@@ -6,6 +6,14 @@ function Client(){
     this.urls =                 [];
 }
 /**
+ * 克隆描述信息
+ */
+Client.prototype.clone = function(){
+  var client = new Client(this.obj);
+  client.obj = null;
+  return client;
+};
+/**
  * 获取websocket连接对象
  */
 Client.prototype.getWebSocket = function(){
@@ -80,7 +88,7 @@ Client.prototype.getAddress = function(){
 Client.prototype.send = function(input){
   var client = this;
   
-  return Promise(function(resolve, reject){
+  return new Promise(function(resolve, reject){
     if(typeof input == 'string'){
       try{
         client.obj.send(input);

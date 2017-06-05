@@ -65,6 +65,9 @@ module.exports = {
      * @datas           客户端返回的数据[{url, md5}, ..]
      */
     gatherResources:    function(ws, datas){
+        console.warn(3001);
+        console.log(datas);
+
         var client = new Client(ws);
         var abandonResource = [];                   //抛弃的资源，因为md5不一致(形如 [url, ..])
 
@@ -126,6 +129,8 @@ module.exports = {
             //资源添加结束，通知客户端需要丢弃的资源
             var response = Response(1001, abandonResource);
             ws.send(JSON.stringify(response));
+            console.log("返回结果");
+            console.log(response);
         }).catch(function(e){
             //出错说明代码写错了
             console.log(e);
@@ -265,26 +270,36 @@ module.exports = {
      * @data                    客户端传递的数据对象
      */
     transferDataQuery:  function(ws, data){
-      //寻找发送方
-      var sendclient = this.getClient(ws);
-      //如果找不到发送方，说明发送方已经关闭，则直接结束
-      if(!sendclient){
-        console.warn("转发数据索取请求：发送者已经关闭了连接");
-        return;
-      }
-      //增加响应者的IP
-      data.answer.address = sendclient.getAddress();
+        console.warn("转发数据索取请求");
+
+        //寻找发送方
+        var sendclient = this.getClient(ws);
+        //如果找不到发送方，说明发送方已经关闭，则直接结束
+        if(!sendclient){
+            console.warn("转发数据索取请求：发送者已经关闭了连接");
+            return;
+        }
+        //增加响应者的IP
+        data.answer.address = sendclient.getAddress();
+
+        if(!data.offer.address){
+            console.log("发生错误报文" + JSON.stringify(data));
+            return;
+        }
+
+        //寻找接收者
+        var receiveclient = this.getClient(data.offer.address);
+        //如果找不到接收者，则说明接受着已经关闭，则直接结束
+        if(!receiveclient){
+            console.warn("转发数据索取请求：接收者已经关闭了连接");
+            return;
+        }
+
+        console.log(data);
       
-      //寻找接收者
-      var receiveclient = this.getClient(data.offer.address);
-      //如果找不到接收者，则说明接受着已经关闭，则直接结束
-      if(!receiveclient){
-        console.warn("转发数据索取请求：接收者已经关闭了连接");
-        return;
-      }
-      
-      //转发
-      receiveclient.send({ code: 1201, data: data });
+        //转发
+        console.log({ code: 1201, data: data });
+        receiveclient.send({ code: 1201, data: data });
     },
     /**
      * 转发拒绝服务
@@ -327,10 +342,13 @@ module.exports = {
      * @data            客户端传输数据 {url, md5}
      */
     appendResource: function(ws, data){
+        console.warn("增加资源");
+
         //获取客户端
         var client = this.getClient(ws);
         //客户端扩展资源
         client.addURL(data.url);
+
         //资源扩展客户端
         var resource = this.getResource(data.url);
         (async(function(){
@@ -341,6 +359,7 @@ module.exports = {
                     resource.addClient(client, data.md5);
                     global.resources.push(resource);
                 }catch(e){
+                    console.log(e);
                     //资源获取失败，不管了
                     console.log("增加资源:资源获取失败");
                 }
@@ -356,6 +375,15 @@ module.exports = {
      */
     getAllClients:  function(){
       return global.clients;
+    },
+    /**
+     * 获取客户端信息
+     */
+    getAllClientsDesc:  function () {
+      var clients = [];
+      global.clients.forEach(function(client){
+          clients.push(client.clone());
+      });
     },
     /**
      * 获取所有资源列表

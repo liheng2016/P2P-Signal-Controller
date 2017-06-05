@@ -221,7 +221,7 @@ utils.url.getMd5 = function(url, callback){
                         //获取不到资源服务器
                         reject();
                     }else{
-                        var servlet = utils.url.getServletAbsolutePath(server, config.resource.servlets.md5);
+                        var servlet = utils.url.getServletAbsolutePath(server, "md5");
                         //通过http获取资源的md5
                         httpclient.get(servlet + "?url=" + url).then(function(txt){
                             try{

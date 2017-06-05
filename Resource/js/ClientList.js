@@ -1,6 +1,7 @@
 $(function(){
     //获取资源列表
     $.post("/client/list", function(res){
+        console.log(res);
         $.each(res.data, function(i, item){
             //构造资源数组
             var dom = "";
