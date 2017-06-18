@@ -12,6 +12,16 @@ Client.prototype.getWebSocket = function(){
     return this.obj;
 };
 /**
+ * 克隆
+ */
+Client.prototype.clone = function () {
+  var client = {
+      address:          this.address,
+      weight:           this.weight,
+      urls:             this.urls
+  }
+};
+/**
  * 检查另外一个客户端是否和自己一样
  * @client          另外一个客户端、一个websocket连接、ip地址
  */

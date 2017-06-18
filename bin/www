@@ -2,7 +2,7 @@
 /*** 模块引用 ***/
 var http = require('http');
 var os = require('os');
-var debug = require('debug')('Catalog:server');
+var debug = require('debug')('P2P-Signal-Controller:server');
 var WebSocketServer = require("ws").Server;
 /*** 自定义 ***/
 //端口号
@@ -32,6 +32,7 @@ function normalizePort(val) {
 /*** 开启HTTP控制服务器 ***/
 var app = require("../app");
 port = normalizePort(process.env.PORT || '8080');
+console.log(port);
 app.set('port', port);
 var server = http.createServer(app);
 server.listen(port);
@@ -80,11 +81,15 @@ var wss = new WebSocketServer({
 });
 //注册连接触发事件
 wss.on("connection", function(ws){
+  console.log("客户端连入");
+
   //登记客户端
   WSCtrl.manager.addClient(ws);
   
   //监听关闭
   ws.on("close", function(event){
+    console.log("客户端退出");
+
     //清除这个客户端 & 从资源列表中清除这个客户端的提供选项
     WSCtrl.manager.deleteClient(this);
   });

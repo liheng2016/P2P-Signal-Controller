@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    var client = new WebSocket("ws://localhost:10000");
+    client.onerror = function () {
+        console.log("连接失败");
+    };
+    client.onopen = function () {
+        console.log("连接成功");
+    };
+    client.onclose = function () {
+        console.log("连接关闭");
+    };
+    client.onabort = function () {
+        console.log("连接中断");
+    }
+</script>
+</body>
+</html>

@@ -1,3 +1,5 @@
+console.log("WebSocket管理模块初始化");
+
 /*** 引用模块 ***/
 var WebSocketServer = require("ws").Server;
 var path = require("path");
@@ -39,12 +41,17 @@ module.exports = {
                 }
             }
         }
+        console.log("当前客户端情况");
+        console.log(global.clients.length);
     },
     /**
      * 删除客户端
      * @ws
      */
     deleteClient:  function(ws){
+        console.log("删除前客户端数量");
+        console.log(global.clients.length);
+
         var i;
         //删除客户端记录
         for(i = 0; i < global.clients.length; i++) {
@@ -355,7 +362,14 @@ module.exports = {
      * 获取所有客户端
      */
     getAllClients:  function(){
-      return global.clients;
+        var clients = [];
+        if(global.clients.length > 0){
+            clients = global.clients.map(function (client) {
+                return client.clone();
+            });
+        }
+        console.log(clients);
+        return clients;
     },
     /**
      * 获取所有资源列表
