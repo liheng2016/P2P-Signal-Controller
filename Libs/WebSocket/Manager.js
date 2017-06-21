@@ -1,12 +1,12 @@
 console.log("WebSocket管理模块初始化");
 
 /*** 引用模块 ***/
-var WebSocketServer = require("ws").Server;
 var path = require("path");
 var fs = require("fs");
 var crypto = require('crypto');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
+var uuid = require('node-uuid');
 /*** 自定义模块 ***/
 var utils = require("../Utils");
 var Client = require("./Type/Client");
@@ -41,8 +41,7 @@ module.exports = {
                 }
             }
         }
-        console.log("当前客户端情况");
-        console.log(global.clients.length);
+        console.log(client);
     },
     /**
      * 删除客户端
@@ -368,7 +367,6 @@ module.exports = {
                 return client.clone();
             });
         }
-        console.log(clients);
         return clients;
     },
     /**

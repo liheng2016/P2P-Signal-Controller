@@ -15,11 +15,11 @@ Client.prototype.getWebSocket = function(){
  * 克隆
  */
 Client.prototype.clone = function () {
-  var client = {
+  return {
       address:          this.address,
       weight:           this.weight,
       urls:             this.urls
-  }
+  };
 };
 /**
  * 检查另外一个客户端是否和自己一样

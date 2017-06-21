@@ -1,5 +1,5 @@
 var router = require('express').Router();
-var wsManager = require("../Libs/WebSocket/Manager");
+var wsManager = require("../bin/www").WSCtrl.manager;
 var rh = require("../Libs/ResponseHandler");
 
 //列出所有资源

@@ -11,6 +11,7 @@ var bodyParser = require('body-parser');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
+
 // uncomment after placing your favicon in /Resource
 //app.use(favicon(path.join(__dirname, 'Resource', 'favicon.ico')));
 app.use(logger('dev'));
