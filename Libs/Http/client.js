@@ -1,5 +1,6 @@
 /*** 模块引用 ***/
 var http = require("http");
+var Promise = require("es6-promise").Promise;
 
 
 var client = {
@@ -20,6 +21,22 @@ var client = {
                 }).on('error', function(e){
                     reject(e);
                 });
+            }
+        });
+    },
+    /**
+     * post 获取
+     * @host            链接
+     * @port            端口
+     * @path
+     * @data            json化数据
+     */
+    post: function (url, data) {
+        return new Promise(function (resolve, reject) {
+            if(!url || !data){
+                reject();
+            }else{
+                //var req = http.request();
             }
         });
     }

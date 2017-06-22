@@ -1,6 +1,7 @@
 console.log("WebSocket管理模块初始化");
 
 /*** 引用模块 ***/
+var IPManager = require("../IP");
 var path = require("path");
 var fs = require("fs");
 var crypto = require('crypto');
